@@ -52,10 +52,6 @@ module.exports = (sequelize) => {
     },
     genre: Sequelize.STRING,
     year: Sequelize.INTEGER,
-
-    // Timestamps
-    createdAt: Sequelize.DATE,
-    updatedAt: Sequelize.DATE
   }, {
     sequelize,
     modelName: 'Book',

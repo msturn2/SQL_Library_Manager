@@ -4,11 +4,11 @@ extends layout
 block content 
   h1= title
 
-  include form-error
+  include ./includes/form-error
   
   form(action="/books/new", method="POST")
 
-    include form
+    include ./includes/update-book-form
 
     p
       input(type="submit", value="Create New Book")
