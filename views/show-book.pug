@@ -1,0 +1,14 @@
+extends layout
+
+
+block content
+  h1= `Title: ${book.title}`
+
+  include ./includes/by_line
+
+  h4 Would like to Update the Book's information?
+  a(class="button", href="/books") Home
+  | | 
+  a(class="button", href="/books/" + book.id + "/update") Update Book 
+  | | 
+  a(class="button", href="/books/" + book.id + "/delete") Delete Book

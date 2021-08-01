@@ -19,7 +19,7 @@ function asyncHandler(callback) {
 /**
  * Shows the full list of books
  */
-router.get("/", asyncHandler(async (req, res) => {
+ router.get("/", asyncHandler(async (req, res) => {
   const page = req.query.page;
   !page || page <= 0
   ? res.redirect("?page=1")
@@ -52,6 +52,84 @@ router.get("/", asyncHandler(async (req, res) => {
       pages 
     }
   );
+}));
+
+/**
+ * Search for a Book
+ */
+router.get("/search", asyncHandler(async (req, res) => {
+  const { term } = req.query;
+  let page = req.query.page;
+
+  !page || page <= 0
+  ? res.redirect(`?term=${term}&page=1`)
+  : null;
+
+  const booksPerPage = 10;
+  const offset = (page - 1) * booksPerPage;
+  
+  const { count, rows } = await Book.findAndCountAll({
+    where: {
+      [Op.or]: [
+        {
+          title: {
+            [Op.like]: `%${term}%`
+          }
+        },
+        {
+          author: {
+            [Op.like]: `%${term}%`
+          }
+        },
+        {
+          genre: {
+            [Op.like]: `%${term}%`
+          }
+        },
+        {
+          year: {
+            [Op.like]: `%${term}%`
+          }
+        }
+      ]
+    },
+    limit: booksPerPage,
+    offset
+  });
+
+  if (count > 0) {
+    const pageNumbers = Math.ceil(
+      count / booksPerPage
+    );
+    page > pageNumbers
+    ? res.redirect(`?term=${term}&page=${pageNumbers}`)
+    : null;
+  
+    let pages = [];
+    for (let i = 1; i <= pageNumbers; i++) {
+      pages.push(i);
+    }
+
+    res.render(
+      "index",
+      { 
+        books: rows, 
+        title: "Search Results",
+        pages,
+        term
+      }
+    );
+
+    console.log(term);
+  } else {
+    res.render(
+      "no-search-results",
+      {
+        title: "Nothing Found",
+        term
+      }
+    );
+  }
 }));
 
 /**
@@ -92,9 +170,27 @@ router.post("/new", asyncHandler(async (req, res) => {
 }));
 
 /**
- * Shows book detail form
+ * Shows individulal book
  */
 router.get("/:id", asyncHandler(async (req, res) => {
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    res.render(
+      "show-book",
+      { 
+        book,
+        title: "Upddate Book"
+      }
+    );
+  } else {
+    throw error;
+  }
+}));
+
+/**
+ * Update Book form
+ */
+ router.get("/:id/update", asyncHandler(async (req, res) => {
   const book = await Book.findByPk(req.params.id);
   if (book) {
     res.render(

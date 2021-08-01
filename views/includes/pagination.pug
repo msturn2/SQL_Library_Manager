@@ -1,5 +1,10 @@
 p 
   each page in pages
     span 
-      span
-        a(class="button", href=`books?page=${page}`)= page++
+      if term 
+        span 
+          a(class="button", href=`/books/search?term=${term}&page=${page}`)= page++
+      else
+        span
+          a(class="button", href=`/books/?page=${page}`)= page++
+          //- a(class="button", href=`books?page=${page}`)= page++

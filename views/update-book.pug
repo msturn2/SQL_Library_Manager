@@ -8,13 +8,11 @@ block content
 
   form(action=`/books/${book.id}`, method="POST")
 
-  include ./includes/update-book-form
+    include ./includes/update-book-form
 
-  p 
-    input(type="submit", value="Update Book")
-  
-  div
-    p 
-      a(class="button", href=`/books/${book.id}`) Cancel
-    p 
+    p
+      input(type="submit" value="Update Book")
+    p
+      a(class="button", href="/books") Cancel
+    p
       a(class="button", href=`/books/${book.id}/delete`) Delete Book

@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  include ./includes/search-form 
+
+  div  
+    h2 "#{term}" doesn't match any books in the database
+    p Please try another search or 
+      a(class="button", href="/books") return to Book listing

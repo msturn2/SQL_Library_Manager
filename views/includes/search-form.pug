@@ -1,0 +1,13 @@
+div 
+  if term 
+    p
+      a(class="button", href="/books") Home
+  else 
+    p 
+      a(class="button", href="/books/new") Create New Book
+
+  form(method="GET", action="/books/search")
+    input(type="search", placeholder="Search...", name="term")
+    | 
+    button(type="submit")
+      | Search

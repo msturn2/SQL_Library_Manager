@@ -9,7 +9,9 @@ module.exports = (sequelize) => {
     publishedAt() {
       const date = moment(this.createdAt)
                   .format("MMMM D, YYYY, h:mma");
-      return date;
+      if (date !== null) {
+        return date;
+      }
     }
     /**
      * Helper method for defining associations.
