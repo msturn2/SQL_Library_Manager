@@ -1,27 +1,14 @@
 'use strict';
-
+/**
+ * Book Model auto build using sequelize CLI,
+ * then customized to fit project needs
+ */
 const {
   Sequelize,
   Model
 } = require('sequelize');
 module.exports = (sequelize) => {
-  class Book extends Model {
-    publishedAt() {
-      const date = moment(this.createdAt)
-                  .format("MMMM D, YYYY, h:mma");
-      if (date !== null) {
-        return date;
-      }
-    }
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
+  class Book extends Model {};
   Book.init({
     id: {
       type: Sequelize.INTEGER,
@@ -54,6 +41,7 @@ module.exports = (sequelize) => {
     },
     genre: Sequelize.STRING,
     year: Sequelize.INTEGER,
+    wikiLink: Sequelize.STRING,
   }, {
     sequelize,
     modelName: 'Book',

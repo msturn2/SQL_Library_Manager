@@ -1,6 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:500');
+
 body {
   padding: 10px 50px 50px;
-  font: 18px "Garamond", serif;
+  font: 18px;
+  font-family: 'Rubik', sans-serif;
+  align-items: center;
+  background: rgb(223,242,241);
+  background: linear-gradient(45deg, rgba(223,242,241,1) 0%, rgba(255,255,255,1) 50%, rgba(238,232,222,1) 100%);
 }
 
 a {
@@ -20,6 +26,8 @@ a.button, input[type=submit] {
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
   padding: 10px 14px 12px;
   font-size: 14px;
+  border: 2px solid steelblue;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   border-radius: 2px;
   cursor: pointer;
 }
@@ -46,6 +54,26 @@ ul {
   list-style-type: none;
   margin-bottom: 10px;
   line-height: 1.3em;
+}
+
+h1 {
+  box-sizing: border-box; 
+  display: inline-block;
+  min-width: 38vw;
+  max-width: 80vw;
+  width: 620px;
+  height: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 20px solid #969696;
+  background: #d9dbda;
+  margin: 0px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  border-radius: 2px;
+  font-size: 50px;
+  text-shadow: 2px 2px 35px rgb(0, 0, 0);
 }
 
 h2 {
@@ -95,3 +123,59 @@ input[type=text] {
 .error {
   color: rgb(236, 15, 15);
 }
+
+.search-form button {
+  line-height: 40px;
+  outline: none;
+  background-color: #438bbd;
+  border: none;
+  padding: 0px 15px;
+  border-radius: 0 0.35em 0.35em 0;
+  cursor: pointer;
+}
+
+.search-form input:hover {
+  height: 40px;
+  border-color: #465ee07a;
+  transition: 0.4s ease-in;
+}
+
+
+/* 
+ * Custom styling
+ */
+.buttonCreateNewBook, input.buttonCreateNewBook {
+  padding: 16px 42px;
+  box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.5);
+  line-height: 1.25;
+  background: #FC6E51;
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  position: relative;
+  transition: background-color .6s ease;
+  overflow: hidden;
+  &:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    transform-style: flat;
+    transform: translate3d(-50%,-50%,0);
+    background: rgba(white,.1);
+    border-radius: 100%;
+    transition: width .3s ease, height .3s ease;
+  }
+  &:focus,
+  &:hover {
+      background: darken(#FC6E51,7%);
+  }
+  &:active {
+    &:after {
+      width: 200px;
+      height: 200px;
+    }

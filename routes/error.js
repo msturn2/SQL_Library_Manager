@@ -1,5 +1,8 @@
 /**
  *  Error Handlers
+ *  Decided not to use afterall, but kept in case
+ *  it makes more sense to use this approach in the 
+ *  future.
  */
 
 const express = require("express");

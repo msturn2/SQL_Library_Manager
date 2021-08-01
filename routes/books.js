@@ -4,7 +4,9 @@ const { Book } = require("../models");
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
 
-/* Handler function to wrap each route. */
+/* 
+ * Handler function to wrap each route
+ */
 function asyncHandler(callback) {
   return async(req, res, next) => {
     try {
@@ -17,10 +19,21 @@ function asyncHandler(callback) {
 }
 
 /**
+ * Error Handler
+ */
+const sendStatusCode = (errStatus, msg) => {
+  const err = new Error(msg);
+  err.status = errStatus;
+  throw err;
+};
+
+/**
  * Shows the full list of books
  */
  router.get("/", asyncHandler(async (req, res) => {
   const page = req.query.page;
+
+  // Redirects to page one as opposed to 0
   !page || page <= 0
   ? res.redirect("?page=1")
   : null;
@@ -28,13 +41,21 @@ function asyncHandler(callback) {
   const booksPerPage = 10;
   const offset = (page - 1) * booksPerPage;
   
+  // used findAndCountAll method to assist with
+  // pagination; unpacked the methods count and 
+  // rows objects
   const { count, rows } = await Book.findAndCountAll({
     order: [[ "title", "ASC" ]],
     limit: booksPerPage,
     offset
   });
 
+  // Math.ceil used because pages start at 1
   const pageNumbers = Math.ceil(count / booksPerPage);
+
+  // Redirects to last page if user enters 
+  // page number greater than total number of 
+  // pages
   page > pageNumbers
   ? res.redirect(`?page=${pageNumbers}`)
   : null;
@@ -58,9 +79,11 @@ function asyncHandler(callback) {
  * Search for a Book
  */
 router.get("/search", asyncHandler(async (req, res) => {
+  // stored search term in a destrutured variable
   const { term } = req.query;
   let page = req.query.page;
 
+  // Redirect to page 1 because of indexing at page 0
   !page || page <= 0
   ? res.redirect(`?term=${term}&page=1`)
   : null;
@@ -69,6 +92,8 @@ router.get("/search", asyncHandler(async (req, res) => {
   const offset = (page - 1) * booksPerPage;
   
   const { count, rows } = await Book.findAndCountAll({
+    order: [[ "title", "ASC" ]],
+    // specified search conditioning
     where: {
       [Op.or]: [
         {
@@ -97,6 +122,7 @@ router.get("/search", asyncHandler(async (req, res) => {
     offset
   });
 
+  // conditional to handle if there are no results
   if (count > 0) {
     const pageNumbers = Math.ceil(
       count / booksPerPage
@@ -119,8 +145,6 @@ router.get("/search", asyncHandler(async (req, res) => {
         term
       }
     );
-
-    console.log(term);
   } else {
     res.render(
       "no-search-results",
@@ -183,7 +207,7 @@ router.get("/:id", asyncHandler(async (req, res) => {
       }
     );
   } else {
-    throw error;
+    sendStatusCode(404, "Page Not Found");
   }
 }));
 
@@ -201,7 +225,7 @@ router.get("/:id", asyncHandler(async (req, res) => {
       }
     );
   } else {
-    throw error;
+    sendStatusCode(404, "Page Not Found");
   }
 }));
 
@@ -217,7 +241,7 @@ router.post("/:id", asyncHandler(async (req, res) => {
       await book.update(req.body);
       res.redirect("/books/" + book.id);
     } else {
-      throw error;
+      sendStatusCode(404, "Page Not Found");
     }
   } catch (error) {
     if (error.name === "SequelizeValidationError") {
@@ -250,7 +274,7 @@ router.get("/:id/delete", asyncHandler(async (req, res) => {
       { book, title: "Delete Book" }
     );
   } else {
-    throw error;
+    sendStatusCode(404, "Page Not Found");
   }
 }));
 
@@ -261,7 +285,7 @@ router.post('/:id/delete', asyncHandler(async (req ,res) => {
     await book.destroy();
     res.redirect("/books");
   } else {
-    throw error;
+    sendStatusCode(404, "Page Not Found");
   }
 }));
 
