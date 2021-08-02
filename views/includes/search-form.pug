@@ -1,10 +1,10 @@
 div 
-  if term 
-    p
-      a(class="button", href="/books") Home
-  else 
+  if !term || title === "Nothing Found"
     p 
       a(class="buttonCreateNewBook", href="/books/new") Create New Book
+  else 
+    p
+      a(class="button", href="/books") Home
 
   form.search-form(method="GET", action="/books/search")
     input.search-form(type="search", placeholder="Search...", name="term")

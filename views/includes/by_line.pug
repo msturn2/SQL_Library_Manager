@@ -5,4 +5,7 @@ h2
   |  | 
   = `Year: ${book.year}`
   p
-    = `Wiki Link: ${book.wikiLink}`
+    if (book.wikiLink !== null)
+      a(href=`${book.wikiLink}`, target="_blank")= `Wiki Link: Read more about "${book.title}"`
+    else
+      = `Wiki Link: I'm sorry, there is no link to read more about "${book.title}".`

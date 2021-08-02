@@ -1,5 +1,5 @@
 /**
- * Imports
+ * Import dependencies
  */
 var createError = require('http-errors');
 var express = require('express');
@@ -40,12 +40,15 @@ app.use('/books', booksRouter);
 /**
  * Sync sequelize
  */
-sequelize.sync()
-  .then(() => {
-    app.listen(3001, () => {
-      console.log("This app is running on localhost: 3001");
-    });
-  });
+(async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    console.log("Successfully connected to the database");
+  } catch (error) {
+    console.log("Error occurred connecting to the database: ", error);
+  }
+}) ();
 
 /**
  * 404 Handler passes to Global Handler

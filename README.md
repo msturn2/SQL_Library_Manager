@@ -6,6 +6,8 @@ In this project, I built a web application that includes pages to list, add, upd
 Further additions were made to:
 
 - Added additional views to handle edge cases and errors
+- Added wikiLink prop to db and book model
+  - Used conditional to render link or display user message if field is null
 - Customized stylings include:
   - Gradient added to body
   - Created box styling for h1 tags
@@ -23,7 +25,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console as well as a connect to database successfully message.
