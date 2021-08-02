@@ -13,6 +13,7 @@ const { sequelize } = require("./models");
  */
 var indexRouter = require('./routes/index');
 const booksRouter = require('./routes/books');
+const errorRouter = require("./routes/error");
 
 var app = express();
 
@@ -51,27 +52,9 @@ app.use('/books', booksRouter);
 }) ();
 
 /**
- * 404 Handler passes to Global Handler
+ * Error Handling
  */
-app.use(function (req, res, next) {
-  const err = new Error("Page Not Found");
-  err.status = 404;
-  next(err);
-});
-
-/**
- * Global Error Handler
- */
-app.use(function (err, req, res, next) {
-  if (err.status === 404) {
-    res.status(err.status).render("page-not-found", { err });
-  } else {
-    err.status = 500;
-    err.message = "Oh nooooo...., something has gone wrong! Internal Server Error.";
-    res.status(err.status).render("error", { err });
-  }
-
-  console.error(err.status, err.message);
-});
+app.use(errorRouter.fourZeroFourHandler);
+app.use(errorRouter.globalErrorHandler);
 
 module.exports = app;

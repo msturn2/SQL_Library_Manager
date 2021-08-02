@@ -34,9 +34,9 @@ const sendStatusCode = (errStatus, msg) => {
   const page = req.query.page;
 
   // Redirects to page one as opposed to 0
-  !page || page <= 0
-  ? res.redirect("?page=1")
-  : null;
+  if (!page || page <= 0) {
+    return res.redirect("/books/?page=1");
+  }
 
   const booksPerPage = 10;
   const offset = (page - 1) * booksPerPage;
@@ -56,9 +56,9 @@ const sendStatusCode = (errStatus, msg) => {
   // Redirects to last page if user enters 
   // page number greater than total number of 
   // pages
-  page > pageNumbers
-  ? res.redirect(`?page=${pageNumbers}`)
-  : null;
+  if (page > pageNumbers) {
+    return res.redirect(`?page=${pageNumbers}`);
+  }
 
   let pages = [];
   for (let i = 1; i <= pageNumbers; i++) {
@@ -84,9 +84,9 @@ router.get("/search", asyncHandler(async (req, res) => {
   let page = req.query.page;
 
   // Redirect to page 1 because of indexing at page 0
-  !page || page <= 0
-  ? res.redirect(`?term=${term}&page=1`)
-  : null;
+  if (!page || page <= 0) {
+    return res.redirect(`?term=${term}&page=1`);
+  }
 
   const booksPerPage = 10;
   const offset = (page - 1) * booksPerPage;
@@ -127,9 +127,11 @@ router.get("/search", asyncHandler(async (req, res) => {
     const pageNumbers = Math.ceil(
       count / booksPerPage
     );
-    page > pageNumbers
-    ? res.redirect(`?term=${term}&page=${pageNumbers}`)
-    : null;
+    if (page > pageNumbers) {
+      res.redirect(
+        `?term=${term}&page=${pageNumbers}`
+      );
+    }
   
     let pages = [];
     for (let i = 1; i <= pageNumbers; i++) {
