@@ -147,8 +147,6 @@ router.get("/search", asyncHandler(async (req, res) => {
         term
       }
     );
-  } else if ({term: undefined}) {
-    return res.redirect("/books/?page=1");
   } else {
     res.render(
       "no-search-results",
