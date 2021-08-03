@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 var express = require('express');
 var router = express.Router();
 const { Book } = require("../models");
@@ -13,7 +14,7 @@ function asyncHandler(callback) {
       await callback(req, res, next)
     } catch(error) {
       // Forward to the global error handler
-      next();
+      next(error);
     }
   }
 }
@@ -200,7 +201,8 @@ router.get("/:id", asyncHandler(async (req, res) => {
       }
     );
   } else {
-    throw error;
+    // throw error;
+    throw createError(404, "Page Not Found");
   }
 }));
 
@@ -218,7 +220,8 @@ router.get("/:id", asyncHandler(async (req, res) => {
       }
     );
   } else {
-    throw error;
+    // throw error;
+    throw createError(404, "Page Not Found");
   }
 }));
 
@@ -234,7 +237,8 @@ router.post("/:id", asyncHandler(async (req, res) => {
       await book.update(req.body);
       res.redirect("/books/" + book.id);
     } else {
-      throw error;
+      // throw error;
+      throw createError(404, "Page Not Found");
     }
   } catch (error) {
     if (error.name === "SequelizeValidationError") {
@@ -251,7 +255,8 @@ router.post("/:id", asyncHandler(async (req, res) => {
         }
       );
     } else {
-      throw error;
+      // throw error;
+      throw createError(404, "Page Not Found");
     }
   }
 }));
@@ -267,7 +272,8 @@ router.get("/:id/delete", asyncHandler(async (req, res) => {
       { book, title: "Delete Book" }
     );
   } else {
-    throw error;
+    // throw error;
+    throw createError(404, "Page Not Found");
   }
 }));
 
@@ -278,7 +284,8 @@ router.post('/:id/delete', asyncHandler(async (req ,res) => {
     await book.destroy();
     res.redirect("/books");
   } else {
-    throw error;
+    // throw error;
+    throw createError(404, "Page Not Found");
   }
 }));
 
