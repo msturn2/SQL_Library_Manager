@@ -12,20 +12,11 @@ function asyncHandler(callback) {
     try {
       await callback(req, res, next)
     } catch(error) {
-      // Forward error to the global error handler
-      next(error);
+      // Forward to the global error handler
+      next();
     }
   }
 }
-
-/**
- * Error Handler
- */
-const sendStatusCode = (errStatus, msg) => {
-  const err = new Error(msg);
-  err.status = errStatus;
-  throw err;
-};
 
 /**
  * Shows the full list of books
@@ -209,7 +200,7 @@ router.get("/:id", asyncHandler(async (req, res) => {
       }
     );
   } else {
-    sendStatusCode(404, "Page Not Found");
+    throw error;
   }
 }));
 
@@ -227,7 +218,7 @@ router.get("/:id", asyncHandler(async (req, res) => {
       }
     );
   } else {
-    sendStatusCode(404, "Page Not Found");
+    throw error;
   }
 }));
 
@@ -243,7 +234,7 @@ router.post("/:id", asyncHandler(async (req, res) => {
       await book.update(req.body);
       res.redirect("/books/" + book.id);
     } else {
-      sendStatusCode(404, "Page Not Found");
+      throw error;
     }
   } catch (error) {
     if (error.name === "SequelizeValidationError") {
@@ -276,7 +267,7 @@ router.get("/:id/delete", asyncHandler(async (req, res) => {
       { book, title: "Delete Book" }
     );
   } else {
-    sendStatusCode(404, "Page Not Found");
+    throw error;
   }
 }));
 
@@ -287,7 +278,7 @@ router.post('/:id/delete', asyncHandler(async (req ,res) => {
     await book.destroy();
     res.redirect("/books");
   } else {
-    sendStatusCode(404, "Page Not Found");
+    throw error;
   }
 }));
 
